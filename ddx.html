@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DDX — только форма</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;background:#0f0029;overflow:hidden}
+    .box{
+      position:fixed;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      width:420px;
+      height:570px;          /* ← убрал лишние 90 пикселей снизу */
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.9);
+    }
+    iframe{
+      width:460px;
+      height:1800px;
+      border:none;
+      position:absolute;
+      top:-615px;    /* верх остаётся прежним — форма ровно с таймера */
+      left:-20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <iframe src="https://ruble.ddxfitness.pro/" 
+    sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-popups"
+    scrolling="no" frameborder="0"></iframe>
+</div>
+
+</body>
+</html>
