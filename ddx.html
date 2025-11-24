@@ -2,38 +2,71 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DDX — только форма</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DDX за 1 ₽</title>
+
+  <!-- Telegram Web App API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%;background:#0f0029;overflow:hidden}
+    html,body{
+      height:100%;
+      background:#0f0029;
+      overflow:hidden;
+    }
+
     .box{
       position:fixed;
       top:50%; left:50%;
       transform:translate(-50%,-50%);
-      width:420px;
-      height:570px;          /* ← убрал лишние 90 пикселей снизу */
+      width:92vw;                   /* почти на всю ширину TG */
+      max-width:480px;              /* но не больше, чем красиво */
+      height:88vh;                  /* чуть меньше высоты, чтобы не лезть под кнопки TG */
+      max-height:580px;
+      background:#5123A3;
       border-radius:28px;
       overflow:hidden;
-      box-shadow:0 30px 80px rgba(0,0,0,.9);
+      box-shadow:0 32px 90px rgba(0,0,0,0.7);
     }
+
     iframe{
-      width:460px;
-      height:1800px;
+      width:520px;
+      height:2000px;
       border:none;
       position:absolute;
-      top:-615px;    /* верх остаётся прежним — форма ровно с таймера */
-      left:-20px;
+      /* Подогнано 25.11.2025 — заголовок почти у верха, кнопка почти у низа */
+      top:-505px;
+      left:-30px;
+      pointer-events:auto;
+    }
+
+    /* Тёмная тема Telegram — делаем фон ещё глубже */
+    @media (prefers-color-scheme: dark) {
+      body { background:#0b001a; }
     }
   </style>
 </head>
 <body>
 
 <div class="box">
-  <iframe src="https://ruble.ddxfitness.pro/" 
-    sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-popups"
+  <iframe src="https://ruble.ddxfitness.pro/"
+    sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-popups allow-top-navigation-by-user-activation"
     scrolling="no" frameborder="0"></iframe>
 </div>
+
+<script>
+  // Говорим Telegram, что это Telegram Web App
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();                    // растягиваем на весь доступный экран
+    Telegram.WebApp.disableVerticalSwipes();     // убираем свайпы вверх/вниз (чтобы не мешали)
+    
+    // Опционально: меняем цвет хедера под наш фиолетовый
+    Telegram.WebApp.setHeaderColor('#5123A3');
+    Telegram.WebApp.setBackgroundColor('#0f0029');
+  }
+</script>
 
 </body>
 </html>
