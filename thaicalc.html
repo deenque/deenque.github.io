@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Таиланд Pro 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary: #6366f1;
+            --success: #10b981;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --card: rgba(255,255,255,0.98);
+            --border: #e2e8f0;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body {
+            height: 100dvh;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+
+        .app { min-height: 100dvh; display: flex; flex-direction: column; }
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 50px 20px 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 32px; font-weight: 900; }
+        .header p { font-size: 17px; opacity: 0.95; margin-top: 6px; }
+
+        .content-area { 
+            flex: 1; 
+            padding: 20px 20px 40px; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .official {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            border-radius: 18px;
+            font-size: 15.5px;
+            font-weight: 600;
+            line-height: 1.7;
+        }
+
+        .amount-card { text-align: center; padding: 32px 20px; }
+        .amount-card label { font-size: 17px; font-weight: 600; color: #1e40af; margin-bottom: 12px; display: block; }
+        .amount-card input {
+            font-size: 38px;
+            font-weight: 800;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(241,245,249,0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 24px 0;
+            backdrop-filter: blur(10px);
+        }
+        .tab {
+            flex: 1;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .tab.active {
+            background: white;
+            color: var(--primary);
+            border-radius: 16px;
+            margin: 6px;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(99,102,241,0.25);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+        .input-group { margin-bottom: 22px; }
+        .input-group label {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            background: white;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(99,102,241,0.2);
+        }
+
+        .hint {
+            display: block;
+            margin-top: 8px;
+            font-size: 13.5px;
+            color: #94a3b8;
+            line-height: 1.4;
+            padding-left: 2px;
+        }
+
+        .result {
+            margin: 32px 0;
+            padding: 36px 20px;
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            border-radius: 24px;
+            color: white;
+            text-align: center;
+            font-size: 44px;
+            font-weight: 900;
+            box-shadow: 0 12px 35px rgba(139,92,246,0.35);
+        }
+
+        /* КАРТОЧКИ СРАВНЕНИЯ */
+        .comparison-grid { display: grid; gap: 16px; }
+        .comp-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 22px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .comp-card.best {
+            background: #ecfdf5;
+            border: 3px solid var(--success);
+            transform: scale(1.04);
+            box-shadow: 0 16px 50px rgba(16,185,129,0.3);
+        }
+        .comp-title {
+            font-weight: 800;
+            font-size: 19px;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+        .comp-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 16.5px;
+        }
+        .comp-row span { color: #64748b; }
+        .comp-row strong { font-weight: 800; font-size: 18px; color: #1e293b; }
+        .comp-card.empty {
+            opacity: 0.6;
+            font-style: italic;
+            text-align: center;
+            padding: 32px 20px;
+            color: #94a3b8;
+            font-size: 16px;
+        }
+        .best-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--success);
+            color: white;
+            padding: 7px 16px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="header">
+        <h1>Калькулятор обмена (THB)</h1>
+        <p>Лучший курс RUB → THB</p>
+    </div>
+
+    <div class="content-area">
+
+        <div class="card official">
+            <strong>Курсы ЦБ РФ (сегодня)</strong><br>
+            1 USD = <span id="official_usd">—</span> ₽  1 CNY = <span id="official_cny">—</span> ₽
+        </div>
+
+        <div class="card amount-card">
+            <label>Сколько рублей меняем?</label>
+            <input type="number" id="global_amount" value="100000" placeholder="100000">
+            <small class="hint">Сумма в рублях для обмена</small>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="up">UnionPay</button>
+            <button class="tab" data-tab="usd">USD наличные</button>
+            <button class="tab" data-tab="ex">Менялы</button>
+        </div>
+
+        <!-- UnionPay -->
+        <div class="tab-content card active" id="up">
+            <div class="input-group">
+                <label>RUB → CNY (РСХБ/CNY)</label>
+                <input type="number" step="0.01" id="rub_to_cny" placeholder="13.45">
+                <small class="hint">Курс покупки юаней в вашем банке (например РСХБ, и др.)</small>
+            </div>
+            <div class="input-group">
+                <label>CNY → THB (по карте)</label>
+                <input type="number" step="0.0001" id="cny_to_thb" placeholder="4.92">
+                <small class="hint">Курс при оплате картой UnionPay или курс снятия в АТМ в Таиланде</small>
+            </div>
+            <div class="result" id="res_up">— ฿</div>
+        </div>
+
+        <!-- USD -->
+        <div class="tab-content card" id="usd">
+            <div class="input-group">
+                <label>Покупаю USD в РФ (₽ за 1$)</label>
+                <input type="number" step="0.01" id="rub_to_usd" placeholder="96.80">
+                <small class="hint">Курс в обменнике или любом банке в России</small>
+            </div>
+            <div class="input-group">
+                <label>Продаю USD в Тае (฿ за 1$)</label>
+                <input type="number" step="0.01" id="usd_to_thb" placeholder="35.90">
+                <small class="hint">Курс покупки долларов за баты( например Superrich, TT Exchange и др.)</small>
+            </div>
+            <div class="result" id="res_usd">— ฿</div>
+        </div>
+
+        <!-- Менялы — ТОЛЬКО ПОЛЕ И РЕЗУЛЬТАТ -->
+        <div class="tab-content card" id="ex">
+            <div class="input-group">
+                <label>Цена за 1 бат к рублю:</label>
+                <input type="number" step="0.0001" id="rub_per_thb" placeholder="0.0269" style="font-size:28px;text-align:center;">
+                <small class="hint">Сколько рублей просят за 1 бат менялы</small>
+            </div>
+            <div class="result" id="res_ex">— ฿</div>
+        </div>
+
+        <!-- ГЛАВНОЕ СРАВНЕНИЕ -->
+        <div class="card">
+            <h3 style="text-align:center;font-size:20px;font-weight:800;margin-bottom:20px;color:#1e293b;">
+                За <span id="compare_sum">100 000</span> ₽ получу:
+            </h3>
+            <div class="comparison-grid" id="comparison_cards"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    let official = { usd_rub: 0, cny_rub: 0 };
+
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.tab).classList.add('active');
+            calc();
+        };
+    });
+
+    ['global_amount','rub_to_cny','cny_to_thb','rub_to_usd','usd_to_thb','rub_per_thb'].forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener('input', () => {
+            localStorage.setItem(id, el.value);
+            calc();
+        });
+        if (localStorage.getItem(id)) el.value = localStorage.getItem(id);
+    });
+
+    async function loadCBR() {
+        try {
+            const res = await fetch('https://www.cbr-xml-daily.ru/daily_json.js');
+            const data = await res.json();
+            official.usd_rub = data.Valute.USD.Value;
+            official.cny_rub = data.Valute.CNY.Value;
+            document.getElementById('official_usd').textContent = official.usd_rub.toFixed(2);
+            document.getElementById('official_cny').textContent = official.cny_rub.toFixed(2);
+            localStorage.setItem('official', JSON.stringify(official));
+            calc();
+        } catch (e) {
+            if (localStorage.getItem('official')) {
+                official = JSON.parse(localStorage.getItem('official'));
+                document.getElementById('official_usd').textContent = official.usd_rub.toFixed(2);
+                document.getElementById('official_cny').textContent = official.cny_rub.toFixed(2);
+                calc();
+            }
+        }
+    }
+
+    function calc() {
+        const rub = parseFloat(document.getElementById('global_amount').value) || 100000;
+        document.getElementById('compare_sum').textContent = Number(rub).toLocaleString('ru-RU');
+
+        const rc = parseFloat(document.getElementById('rub_to_cny').value) || 0;
+        const ct = parseFloat(document.getElementById('cny_to_thb').value) || 0;
+        const thb_up = (rc > 0 && ct > 0) ? rub / rc * ct : 0;
+        const rate_up = thb_up > 0 ? rub / thb_up : 999;
+
+        const ru = parseFloat(document.getElementById('rub_to_usd').value) || 0;
+        const ut = parseFloat(document.getElementById('usd_to_thb').value) || 0;
+        const thb_usd = (ru > 0 && ut > 0) ? rub / ru * ut : 0;
+        const rate_usd = thb_usd > 0 ? rub / thb_usd : 999;
+
+        const rubPerThb = parseFloat(document.getElementById('rub_per_thb').value) || 0;
+        const thb_ex = rubPerThb > 0 ? rub / rubPerThb : 0;
+        const rate_ex = rubPerThb > 0 ? rubPerThb : 999;
+
+        const fmt = n => n > 0 ? Math.round(n).toLocaleString('ru-RU') + ' ฿' : '— ฿';
+        document.getElementById('res_up').textContent = fmt(thb_up);
+        document.getElementById('res_usd').textContent = fmt(thb_usd);
+        document.getElementById('res_ex').textContent = fmt(thb_ex);
+
+        const cards = [
+            { name: "UnionPay", thb: thb_up, rate: rate_up },
+            { name: "USD наличные", thb: thb_usd, rate: rate_usd },
+            { name: "Менялы в Тае", thb: thb_ex, rate: rate_ex }
+        ];
+
+        const valid = cards.filter(c => c.thb > 0);
+        const bestRate = valid.length > 0 ? Math.min(...valid.map(c => c.rate)) : 999;
+
+        const html = cards.map(card => {
+            if (card.thb === 0) {
+                return `<div class="comp-card empty">Введите данные</div>`;
+            }
+            const isBest = card.rate === bestRate;
+            const badge = isBest ? '<div class="best-badge">ЛУЧШИЙ</div>' : '';
+            return `
+                <div class="comp-card ${isBest ? 'best' : ''}">
+                    ${badge}
+                    <div class="comp-title">${card.name}</div>
+                    <div class="comp-row"><span>Получу:</span> <strong>${Math.round(card.thb).toLocaleString('ru-RU')} ฿</strong></div>
+                    <div class="comp-row"><span>1 бат =</span> <strong>${card.rate.toFixed(4)} ₽</strong></div>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('comparison_cards').innerHTML = html;
+    }
+
+    loadCBR();
+    calc();
+</script>
+</body>
+</html>
